@@ -37,6 +37,7 @@ footer{
     border-radius: 10px;
     color: #a5a59e;
     transition: .3s;
+    cursor: pointer;
 }
 
 #Registrar:hover{
@@ -53,6 +54,7 @@ footer{
     border-radius: 10px;
     color: #a5a59e;
     transition: .3s;
+    cursor: pointer;
 }
 
 #Entrar:hover{
@@ -160,11 +162,11 @@ nav.menuLateral{
     top: 79px;
     left: 0;
     overflow: hidden;
-    transition: .3s;
+    transition: .5s;
 }
 
-nav.menuLateral:hover{
-    width: 300px;
+nav.menuLateral.expandir{
+   width: 300px;
 }
 
 .btnExpandir{
@@ -191,6 +193,10 @@ ul li.itemMenu{
     transition: .3s;
 }
 
+ul li.ativo{
+    background-color: #a5a59e;
+}
+
 ul li.itemMenu a{
     color: #F0F0F0;
     text-decoration: none;
@@ -202,6 +208,11 @@ ul li.itemMenu a{
 }
 
 ul li.itemMenu a .txt-link{
+    margin-left: 70px;
+    transition: .5s;
+}
+
+nav.menuLateral.expandir .txt-link{
     margin-left: 40px;
 }
 
