@@ -123,8 +123,8 @@ aside .logo img{
 }
 
 .profile-photo{
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -264,6 +264,7 @@ main .date input[type='date']{
 }
 
 main .insights{
+    margin-top: 1rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.6rem;
@@ -404,3 +405,35 @@ main .investments a{
 .right{
     margin-top: 7rem;
 }
+/* ============= RIGHT ============= */  
+.right{
+    margin-top: 10.0rem;
+}
+
+.right .top{
+    display: flex;
+    justify-content: end;
+    gap: 1rem;    
+}
+
+.right .top button{
+    display: none;
+}
+
+.right .update{
+    height: 3.6rem;    
+}
+
+main .frame{
+    margin-top: 1.2rem;
+}
+
+.right .recent-updates .updates{
+    background: var(--color-white);
+    padding: 0px 15px 15px 15px;
+    border-radius: var(--card-border-ratius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+
