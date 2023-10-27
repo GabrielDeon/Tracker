@@ -1,0 +1,439 @@
+/*-----------------------------FONTS--------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Libre+Baskerville:ital@1&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/*-----------------------------ROOT VARIABLES--------------------------*/
+:root{
+    --color-primary: #7380ec;    
+    --color-danger: #ff7782;
+    --color-sucess: #41f1b6;
+    --color-warning: #ffbb55;
+    --color-white: #fff;
+    --color-info-dark: #7d8da1;
+    --color-info-light: #dce1eb;
+    --color-dark: #363949;
+    --color-light: rgba(132, 139, 200, 0.18);
+    --color-primary-variant: #111e88;
+    --color-dark-variant: #677483;
+    --color-background: #f6f6f9;
+    --color-golden: rgba(218, 118, 3, 0.585);
+
+    --card-border-ratius: 2rem;
+    --border-ratius-1: 0.4rem;
+    --border-ratius-2: 0.8rem;
+    --border-ratius-3: 1.2rem;
+
+    --card-padding: 1.8rem;
+    --padding-1: 1.2rem;
+
+    --box-shadow: 0 2rem 3rem var(--color-light) 
+}
+/*-----------------------------HOME--------------------------*/
+*{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 14px;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    font-family: poppins, sans-serif;
+    font-size: 0.88rem;
+    background: var(--color-background);
+    user-select: none;
+    overflow-x: hidden;
+    color: var(--color-dark);
+}
+
+a{
+    color: var(--color-dark);
+}
+
+img{
+    display: block;
+}
+
+h1{
+    font-weight: 800;
+    font-size: 1.8rem;
+}
+
+h2{
+    font-size: 1.4rem
+}
+
+h3{
+    font-size: 0.87rem;
+}
+
+h4{
+    font-size: 0.8rem;
+}
+
+h5{
+    font-size: 0.77rem;
+}
+
+p{
+    color: var(--color-dark-variant);
+}
+
+b{
+    color: var(--color-dark);
+}
+
+aside{
+    height: 100vh;    
+}
+
+aside .top{
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 7rem;
+}
+
+aside .logo{
+    display: flex;
+    gap: .8rem;
+}
+
+aside .close{    
+    text-align: center;
+}
+
+aside .logo img{
+    width: 2rem;
+    height: 2rem;
+
+}
+
+.small{
+    font-size: 0.75rem;
+}
+
+.profile-photo{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.text-muted{
+    color: var(--color-info-dark);
+}
+
+.primary{
+    color: var(--color-primary);
+}
+
+.golden{
+    color: var(--color-golden);
+}
+
+.money{
+    color: green;
+}
+
+.danger{
+    color: var(--color-danger);
+}
+.sucess{
+    color: var(--color-sucess);
+}
+.warning{
+    color: var(--color-warning);
+}
+
+.container{
+    display: grid;
+    width: 96%;
+    margin: 0 auto;    
+    gap: 1.8rem;
+    grid-template-columns: 14rem auto 23rem;
+}
+
+.HeaderApplication{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #162a47;
+    height: 75px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: 4px solid #a5a59e;
+    text-align: center;         
+}
+
+.TopHeaderLogo{    
+    display: inline-block;
+    margin-top: 7px;
+    height: 65px;
+    width: 65px;    
+    text-align: center;    
+}
+
+/* ============= SIDEBAR ============= */  
+aside .sidebar{
+    background: white;
+    display: flex;
+    flex-direction: column;
+    height: 86vh;
+    position: relative;
+    top:3rem
+}
+
+aside h3{
+    font-weight: 650;
+}
+
+aside .sidebar a{
+    display: flex;
+    color: var(--color-info-dark);
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    height: 3.7rem;
+    transition: all 300ms ease;    
+}
+
+aside .sidebar a span{
+    font-size: 1.6rem;
+    transition: all 300ms ease;
+}
+
+aside .sidebar a:last-child{
+    position: absolute;
+    bottom: 7.5rem;
+    width: 100%;
+}
+
+aside .sidebar a:active{
+    background: var(--color-light);
+    color: var(--color-primary);
+    margin-left: 0;
+}
+
+aside .sidebar a.active:before{
+    content: '';
+    width: 6px;
+    height: 100%;
+    background: var(--color-primary);
+}
+
+aside .sidebar a.active span{
+    color: var(--color-primary);
+    margin-left: calc(1rem - 3px);
+}
+
+aside .sidebar a:hover{
+    color: var(--color-primary);
+}
+
+aside .sidebar a:hover span{
+    margin-left: 1rem;
+}
+
+/* ============= MAIN ============= */  
+main{
+    margin-top: 7rem;
+}
+
+main .date{
+    display: inline-block;
+    background: var(--color-light);
+    border-radius: var(--border-ratius-1);
+    margin-top: 1rem;
+    padding: 0.5rem 1.6rem;
+}
+
+main .date input[type='date']{
+    background: transparent;
+    color: var(--color-dark);
+}
+
+main .insights{
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+}
+
+main .insights > div{
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: 1rem;
+    box-shadow: var(--box-shadow);    
+    transition: all 300ms ease;
+}
+
+main .insights > div:hover {
+    box-shadow: none;
+}
+
+main .insights > div span{
+    background: var(--color-primary);
+    border-radius: 50%;
+    color: var(--color-white);
+    font-size: 2rem;
+}
+
+main .insights > div.cripto span{
+    background: var(--color-golden);
+}
+
+main .insights > div.fixed span{
+    background: var(--color-sucess);
+}
+
+main .insights > div.variable span{
+    background: var(--color-primary);
+}
+
+main .insights > div .middle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .insights h3{
+    margin: 1rem 0 0.6rem;
+    font-size: 1rem;
+}
+
+main .insights .progress{
+    position: relative;
+    width: 92px;
+    height: 92px;    
+}
+
+main .insights svg{
+    width: 7rem;
+    height: 7rem;
+}
+
+main .insights svg circle{
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 14;
+    stroke-linecap: round;
+    transform: translate(5px,5px);
+    stroke-dasharray: 110;
+    stroke-dashoffset: 92;
+}
+
+main .insights .variable svg circle{
+    stroke-dashoffset: -30;
+    stroke-dasharray: 200;
+}
+
+main .insights .fixed svg circle{
+    stroke-dashoffset: 20;
+    stroke-dasharray: 90;
+}
+
+main .insights .cripto svg circle{
+    stroke-dashoffset: 35;
+    stroke-dasharray: 110;
+}
+
+main .insights .progress .number{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main .insights small{
+    margin-top: 1.6rem;
+}
+
+main .investments{
+    margin-top: 2rem;
+}
+
+main .investments h2{
+    margin-bottom: 0.8rem;
+}
+
+main .investments table{
+    background: var(--color-white);
+    width: 100%;
+    border-radius: var(--card-border-ratius);
+    padding: var(--card-padding);
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+main .investments table:hover{
+    box-shadow: none;
+}
+
+main table tbody td{
+    height: 2.8rem;
+    border-bottom: 1px solid var(--color-light);
+    color: var(--color-dark-variant);
+}
+
+main table tbody tr:last-child td{
+    border: none;
+}
+
+main .investments a{
+    text-align: center;
+    display: block;
+    margin: 1rem auto;
+    color: var(--color-primary);
+}
+
+.right{
+    margin-top: 7rem;
+}
+/* ============= RIGHT ============= */  
+.right{
+    margin-top: 10.0rem;
+}
+
+.right .top{
+    display: flex;
+    justify-content: end;
+    gap: 1rem;    
+}
+
+.right .top button{
+    display: none;
+}
+
+.right .update{
+    height: 3.6rem;    
+}
+
+main .frame{
+    margin-top: 1.2rem;
+}
+
+.right .recent-updates .updates{
+    background: var(--color-white);
+    padding: 0px 15px 15px 15px;
+    border-radius: var(--card-border-ratius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+
