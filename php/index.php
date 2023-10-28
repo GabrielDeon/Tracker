@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <title>Tracker</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="TopHeader">
+      <div>
+        <a href = "Login.php" id="Entrar">Login</a>
+        <a href="formularioTraker.php" id="Registrar">Register</a>
+      </div>
+      <div>
+        <img
+          class="TopHeaderLogo"]
+          src="../assets/images/tracker_logo_transparente.png"          
+        />
+      </div>
+    </div>
+    <div class="WelcomeBlock">
+      <h1 class="WelcomeText">Welcome to Tracker</h1>
+      <p1 class="WelcomeFollowUp">An easy way to visualize your Wealth.</p1>
+    </div>
+
+    <div class="midle">
+      <img class="SloganImage1" src="../assets/images/slogan_grapico.jpg" />
+      <p class="Slogan">
+        "Take Charge of Your Finances with Ease! Our Financial Control App -
+        Where Your Money Finds Its Home. Empower your financial future with our
+        user-friendly app that puts you in control of your money. Say goodbye to
+        financial stress and hello to smart financial management. Use it now
+        and start making your money work for you!" -Alvo Dumbledore
+      </p>
+      <img
+        class="SloganImage2"
+        src="../assets/images/empresário-está-empilhar-moedas.jpg"
+      />
+    </div>
+
+    <div class="DivFooter">
+      <div>
+        <img
+          class="LogoFooter"
+          src="../assets/images/tracker_logo_transparente.png"
+        />
+      </div>
+      <div>
+        <ul class="ListasFooter">
+          <li class="itens"><a>Tracker Business</a></li>
+          <li class="itens"><a>Who We Are</a></li>
+          <li class="itens"><a>Talk to Us</a></li>
+        </ul>
+        <ul class="ListasFooter">
+          <li class="itens"><a>Use Terms</a></li>
+          <li class="itens"><a>Privacy Policy</a></li>
+          <li class="itens"><a>Socials</a></li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
