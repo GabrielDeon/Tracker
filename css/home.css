@@ -91,21 +91,30 @@ b{
     color: var(--color-dark);
 }
 
-aside{
+aside{    
+    box-shadow: 0rem 2rem 4rem var(--color-info-dark);
     height: 100vh;    
+    padding-right: var(--card-padding);
+    
 }
 
 aside .top{
-    background: white;
+    background: var(--color-background);
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 7rem;
+    
 }
 
 aside .logo{
+    background: var(--color-background);
     display: flex;
     gap: .8rem;
+}
+
+aside .logo > img{
+    margin-left: 23px;
 }
 
 aside .close{    
@@ -161,6 +170,7 @@ aside .logo img{
     margin: 0 auto;    
     gap: 1.8rem;
     grid-template-columns: 14rem auto 23rem;
+    
 }
 
 .HeaderApplication{
@@ -185,11 +195,15 @@ aside .logo img{
 }
 
 /* ============= SIDEBAR ============= */  
+aside{
+    background: var(--color-background);
+}
+
 aside .sidebar{
-    background: white;
+    background: var(--color-background);
     display: flex;
     flex-direction: column;
-    height: 86vh;
+    height: 76vh;
     position: relative;
     top:3rem
 }
@@ -407,7 +421,7 @@ main .investments a{
 }
 /* ============= RIGHT ============= */  
 .right{
-    margin-top: 10.0rem;
+    margin-top: 9.3rem;
 }
 
 .right .top{
@@ -444,7 +458,29 @@ main .frame{
     display: grid;
     grid-template-columns: 0.6rem auto;
     gap: 1rem;
-    
 }
+
+.addButtons{    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    border-radius: var(--card-border-ratius);
+    width: 80%;
+    height: 3.5rem;
+    background: #1aa757;
+    transition: all 300ms ease;
+    cursor: pointer;    
+}
+
+.addButtons:hover{
+    background: #7380ec;    
+    border: 1px solid #dce1eb;
+}
+
+.addText{
+    color: white;
+}
+
 
 
