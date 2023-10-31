@@ -14,7 +14,7 @@
     --color-light: rgba(132, 139, 200, 0.18);
     --color-primary-variant: #111e88;
     --color-dark-variant: #677483;
-    --color-background: #f6f6f9;
+    --color-background: #ededf8;
     --color-golden: rgba(218, 118, 3, 0.585);
 
     --card-border-ratius: 2rem;
@@ -92,7 +92,8 @@ b{
 }
 
 aside{
-    height: 100vh;    
+    height: 100vh;        
+    background: white;
 }
 
 aside .top{
@@ -104,6 +105,7 @@ aside .top{
 }
 
 aside .logo{
+    margin-left: 25px;
     display: flex;
     gap: .8rem;
 }
@@ -447,4 +449,22 @@ main .frame{
     
 }
 
+.AddButtons{
+    margin-bottom: 7px;
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-radius: 20px;
+    transition: all 300ms ease;
+    height: 3rem;
+    background: var(--color-primary);
+}
 
+.AddButtons:hover{
+    background: #29b889;
+}
+
+.AddText{
+    color: white;
+}
