@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <script src="https://kit.fontawesome.com/0abe9d2537.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="buttonsForm">
+            <div class="btnColor"></div>
+            <button id="btnSignin">Sign in</button>
+            <button id="btnSignup">Sign up</button>
+        </div>
+
+        <form id = "signin">
+            <input type="text" placeholder="Email" required />
+            <i class="fas fa-envelope iEmail"></i>
+            <input type="password" placeholder="Password" required />
+            <i class="fas fa-lock iPassword"></i>
+            <div class="divCheck">
+                <input type="checkbox" />
+                <span>Remember password</span>
+            </div>
+            <button type="submit">Sign in</button>
+        </form>
+
+        <form id = "signup">
+            <input type="text" placeholder="Email" required />
+            <i class="fas fa-envelope iEmail"></i>
+            <input type="password" placeholder="Password" required />
+            <i class="fas fa-lock iPassword"></i>
+            <input type="password" placeholder="Confirm password" required />
+            <i class="fas fa-lock iPassword2"></i>
+            <div class="divCheck">
+                <input type="checkbox" />
+                <span>Terms</span>
+            </div>
+            <button type="submit">Sign up</button>
+        </form>
+
+    </div>
+
+   
+    
+    <script src="../js/login.js"></script>
+</body>
+</html>
