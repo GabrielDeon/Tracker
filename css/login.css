@@ -7,6 +7,26 @@
     font-family: 'poppins', sans-serif;
 }
 
+.TopHeader{
+    position: fixed;
+    top: 0;
+    background-color: #162a47;
+    height: 75px;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    border-bottom: 4px solid #a5a59e;
+    text-align: center;     
+}
+
+.TopHeaderLogo{
+    margin-top: 7px;
+    height: 65px;
+    width: 65px;    
+    text-align: center;    
+}
+
+
 body {
     width: 100vw;
     height: 100vh;
