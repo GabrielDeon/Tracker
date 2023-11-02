@@ -1,61 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="../css/login.css">
-    <script src="https://kit.fontawesome.com/0abe9d2537.js" crossorigin="anonymous"></script>
-</head>
-<body>           
-    <div class="TopHeader">        
-        <div>
-          <img
-            class="TopHeaderLogo"]
-            src="../assets/images/tracker_logo_transparente.png"          
-          />
-        </div>
+    <link rel="stylesheet" href="../css/login.css" />
+    <script
+      src="https://kit.fontawesome.com/0abe9d2537.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="TopHeader">
+      <div>
+        <img
+          class="TopHeaderLogo"
+          ]
+          src="../assets/images/tracker_logo_transparente.png"
+        />
       </div>
-
-
-
-    <div class="container">
-        <div class="buttonsForm">
-            <div class="btnColor"></div>
-            <button id="btnSignin">Sign in</button>
-            <button id="btnSignup">Sign up</button>
-        </div>       
-
-        <form id = "signin">
-            <input type="text" placeholder="Email" required />
-            <i class="fas fa-envelope iEmail"></i>
-            <input type="password" placeholder="Password" required />
-            <i class="fas fa-lock iPassword"></i>
-            <div class="divCheck">
-                <input type="checkbox" />
-                <span>Remember password</span>
-            </div>
-            <button type="submit">Sign in</button>
-        </form>
-
-        <form id = "signup">
-            <input type="text" placeholder="Email" required />
-            <i class="fas fa-envelope iEmail"></i>
-            <input type="password" placeholder="Password" required />
-            <i class="fas fa-lock iPassword"></i>
-            <input type="password" placeholder="Confirm password" required />
-            <i class="fas fa-lock iPassword2"></i>
-            <div class="divCheck">
-                <input type="checkbox" />
-                <span>Terms</span>
-            </div>
-            <button type="submit">Sign up</button>
-        </form>
-
     </div>
 
-   
-    
+    <div class="container">
+      <div class="buttonsForm">
+        <div class="btnColor"></div>
+        <button id="btnSignin">Sign in</button>
+        <button id="btnSignup">Sign up</button>
+      </div>
+
+      <div style="margin-top: -30px;">
+        <form id="signin">
+          <ul>
+            <li class="signinItem">
+              <input type="text" placeholder="Email/User" required />
+              <i class="fas fa-envelope iEmail"></i>
+            </li>
+            <li class="signinItem">
+              <input type="password" placeholder="Password" required />
+              <i class="fas fa-lock iPassword"></i>
+            </li>
+          </ul>
+
+          <div class="divCheck">
+            <input type="checkbox" />
+            <span>Remember password</span>
+          </div>          
+          <button class="btnSignin" type="submit">Sign in</button>
+        </form>
+
+        <form id="signup">
+          <ul>
+            <li class="signupItem">
+              <input type="text" placeholder="User" required />
+              <i class="fa-solid fa-user"></i>
+            </li>
+            <li class="signupItem">
+              <input type="text" placeholder="Email" required />
+              <i class="fas fa-envelope iEmail"></i>
+            </li>
+            <li class="signupItem">
+              <input type="password" placeholder="Password" required />
+              <i class="fas fa-lock iPassword"></i>
+            </li>
+            <li class="signupItem">
+              <input type="password" placeholder="Confirm password" required />
+              <i class="fas fa-lock iPassword2"></i>
+            </li>
+          </ul>
+          <div class="divCheck">
+            <input type="checkbox" />
+            <span>Terms</span>
+          </div>
+          <button class="btnSignup" type="submit">Sign up</button>
+        </form>
+      </div>
+    </div>
+
     <script src="../js/login.js"></script>
-</body>
+  </body>
 </html>

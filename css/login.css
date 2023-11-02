@@ -45,7 +45,7 @@ body {
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    box-shadow: 0 0 20px 0 darkgrey;
+    box-shadow: 0 0 20px 0 darkgrey;    
 }
 
 form {
@@ -81,12 +81,12 @@ form {
 }
 
 input[type="text"], input[type="password"] {
-    border: none;
-    margin-top: 40px;
+    border: none;    
     border-radius: 60px;
     padding: 8px 0  8px 35px;
     outline: none;
     width: 100%;
+    box-shadow: 0 2rem 3rem rgba(132, 139, 200, 0.18);
 }
 
 button[type="submit"] {
@@ -116,21 +116,32 @@ button[type="submit"] {
     left: 450px;
 }
 
-i {
+ul{
+    list-style: none;
+}
+
+li.signinItem{
+    height: 3rem;
+}
+
+li.signupItem{
+    height: 3rem;
+}
+
+i{
     position: absolute;
-    left: 0;
-    padding: 10px 10px;
+    left: 7px;
+    margin-top: 10px;
 }
 
-.iEmail {
-    top: 40px;
+.btnSignin{
+    position: absolute;
+    bottom: 7rem;
 }
 
-.iPassword {
-    top: 114px; 
+.btnSignup{
+    position: absolute;
+    bottom: 7rem;
 }
 
-.iPassword2 {
-    top: 190px; 
-}
 
