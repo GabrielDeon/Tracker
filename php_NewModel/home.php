@@ -1,3 +1,22 @@
+<?php
+    session_start();
+    if((!isset($_SESSION['login']) == true) and (!isset($_SESSION['pass']) == true)){
+        unset($_SESSION['login']);
+        unset($_SESSION['pass']);
+        header('Location: login.php');
+    } else {        
+        $logado = $_SESSION['login'];
+    }
+
+    if(isset($_POST['logout'])){
+        unset($_SESSION['login']);
+        unset($_SESSION['pass']);
+        header('Location: login.php');
+    }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -51,10 +70,11 @@
                 <h3>Account</h3>
             </a>
 
-            <a name='logout' type='submit'>
+            <a>
                 <span class="material-symbols-outlined">logout</span>
                 <h3>Logout</h3>
             </a>
+            
             </div>
         </form>
       </aside>

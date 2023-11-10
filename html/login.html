@@ -13,14 +13,15 @@
   <body>
     <div class="TopHeader">
       <div>
-        <img
-          class="TopHeaderLogo"
-          ]
-          src="../assets/images/tracker_logo_transparente.png"
-        />
+        <a href="../html/index.html">
+          <img
+           class="TopHeaderLogo"          
+           src="../assets/images/tracker_logo_transparente.png"
+          />
+        </a>
       </div>
     </div>
-
+    
     <div class="container">
       <div class="buttonsForm">
         <div class="btnColor"></div>
@@ -29,7 +30,7 @@
       </div>
 
       <div style="margin-top: -30px;">
-        <form id="signin">
+        <form id="signin" action="login.php" method="POST">
           <ul>
             <li class="signinItem">
               <input type="text" placeholder="Email/User" required />
@@ -48,7 +49,7 @@
           <button class="btnSignin" type="submit">Sign in</button>
         </form>
 
-        <form id="signup">
+        <form id="signup" action="login.php" method="POST">
           <ul>
             <li class="signupItem">
               <input type="text" placeholder="User" required />
@@ -71,10 +72,11 @@
             <input type="checkbox" />
             <span>Terms</span>
           </div>
-          <button class="btnSignup" type="submit">Sign up</button>
+          <button class="btnSignup" type="submit">Sign up</button>          
         </form>
       </div>
     </div>
+  
 
     <script src="../js/login.js"></script>
   </body>
