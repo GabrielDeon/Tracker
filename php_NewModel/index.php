@@ -22,8 +22,8 @@
   <body>
     <div class="TopHeader">
       <div>
-        <a href="../html/login.html" id="Entrar">Login</a>
-        <a href="../html/login.html" id="Registrar">Register</a>
+        <a href="../php_NewModel/login.php" id="Entrar">Login</a>
+        <a href="../php_NewModel/login.php" id="Registrar">Register</a>
       </div>
       <div>
         <img
