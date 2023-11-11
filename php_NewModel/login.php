@@ -15,7 +15,8 @@
     else {      
       //Inclui o arquivo de conexão.
       include_once('connection.php');
-
+      
+      $password = md5($password);
       //Prepara o SQL e executa a Query
       $SQL        = 'INSERT INTO USUARIO(LOGIN, EMAIL, SENHA, STATUS) VALUES(?,?,?,?)';
       $PARAMETERS = array($user, $email, $password, 'Ativo');               
@@ -42,7 +43,7 @@
       $password    = $_POST['inPassword'];
 
       $SQL        = 'SELECT USU.* FROM USUARIO USU WHERE (USU.LOGIN = ? OR USU.EMAIL = ?) AND USU.SENHA = ?';
-      $PARAMETERS = array($emailOrUser, $emailOrUser, $password);               
+      $PARAMETERS = array($emailOrUser, $emailOrUser, md5($password));               
       $QUERY      = sqlsrv_query($conn, $SQL, $PARAMETERS);
       
       if( $QUERY === false )

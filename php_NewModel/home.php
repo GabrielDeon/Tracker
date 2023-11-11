@@ -11,7 +11,7 @@
     if(isset($_POST['logout'])){
         unset($_SESSION['login']);
         unset($_SESSION['pass']);
-        header('Location: login.php');
+        header('Location: index.php');
     }
 
 
@@ -68,12 +68,11 @@
             <a href="#">
                 <span class="material-symbols-outlined">person</span>
                 <h3>Account</h3>
-            </a>
-
-            <a>
-                <span class="material-symbols-outlined">logout</span>
-                <h3>Logout</h3>
-            </a>
+            </a>            
+            <button class="btnLeftSide" name="logout" type="submit">
+              <span class="material-symbols-outlined">logout</span>
+              <h3>Logout</h3>
+            </button>
             
             </div>
         </form>
