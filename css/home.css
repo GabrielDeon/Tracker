@@ -448,6 +448,14 @@ main table tbody tr:last-child td{
     border: none;
 }
 
+.fieldDiv {
+    position: absolute;
+    margin-top: 80px;
+    transition: .5s;
+    width: 100%;
+    height: 100%;
+}
+
 main .investments a{
     text-align: center;
     display: block;
@@ -521,8 +529,64 @@ main .frame{
     color: white;
 }
 
+.btnCtrlCads{
+    
+    
+    
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+}
+
+.formTitle{
+    margin-top: 5px;
+    color: var(--color-dark);
+}
+
+.btnConfirm{
+    padding: 12px;
+    cursor: pointer;
+    color: white;
+    background: var(--color-sucess);
+    border-radius: 10px;
+    font-size: 14px;
+    border: 2px solid var(--color-info-light);
+    font-weight: bold;
+}
+
+input[type="text"], input[type="number"] {
+    background: var(--color-info-light);
+    margin-bottom: 10px;
+    border: none;    
+    border-radius: 60px;
+    padding: 8px 0  8px 35px;
+    outline: none;
+    width: 88%;
+    box-shadow: 0 2rem 3rem rgba(132, 139, 200, 0.18);
+}
+
+.btnConfirm:hover{
+    background: #2de3a7;
+}
+
+.btnCancel{
+    padding: 12px;
+    cursor: pointer;
+    color: white;
+    background: var(--color-danger);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 2px solid var(--color-info-light);
+}
+
+.btnCancel:hover{
+    background: #e95e69;
+}
+
 /* ============= JANELAS POP-UP ============= */  
-#popupContainer {
+#cadInvestment {
     display: none;
     position: fixed;
     top: 0;
@@ -534,18 +598,92 @@ main .frame{
     align-items: center;
 }
 
-#popupContent {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+#cadInvestmentContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0px;
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(to bottom, #babebe, rgb(70, 90, 151));    
+    border-radius: 10px;    
+    box-shadow: 0 0 20px 0 darkgrey;  
+    box-sizing: border-box;
+    z-index: 1000; /* Garante que a janela de pop-up esteja acima do conteúdo principal */
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+    overflow: hidden;        
+    margin: 0;
 }
 
-/* Estilo para o botão de fechar a janela de pop-up */
-#closePopupButton {
-    margin-top: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
+#cadType {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo escuro para destacar a janela de pop-up */
+    justify-content: center;
+    align-items: center;
+}
+
+#cadTypeContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 6px;
+    width: 350px;
+    height: 450px;
+    background: linear-gradient(to bottom, #babebe, rgb(70, 90, 151));    
+    border-radius: 10px;    
+    box-shadow: 0 0 20px 0 darkgrey;  
+    box-sizing: border-box;
+    z-index: 1000; /* Garante que a janela de pop-up esteja acima do conteúdo principal */
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;        
+    margin: 0;
+}
+
+#cadTag {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo escuro para destacar a janela de pop-up */
+    justify-content: center;
+    align-items: center;
+}
+
+#cadTagContent {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 6px;
+    width: 350px;
+    height: 450px;
+    background: linear-gradient(to bottom, #babebe, rgb(70, 90, 151));    
+    border-radius: 10px;    
+    box-shadow: 0 0 20px 0 darkgrey;  
+    box-sizing: border-box;
+    z-index: 1000; /* Garante que a janela de pop-up esteja acima do conteúdo principal */
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;        
+    margin: 0;
+}
+
+li i{
+    position: absolute;
+    left: 33px;
+    margin-top: 9px;
+    
 }
 

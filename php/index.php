@@ -143,61 +143,61 @@ if (isset($_POST['signin'])) {
   </div>
 
   <!-- POP UP - Login/Register -->
-  <div id="popupContainer">
-    <div class="buttonsForm">
-      <div class="btnColor"></div>
-      <button id="btnSignin">Sign in</button>
-      <button id="btnSignup">Sign up</button>
+  <div id="popup">
+    <div id="popupContainer">
+      <div class="buttonsForm">
+        <div class="btnColor"></div>
+        <button id="btnSignin">Sign in</button>
+        <button id="btnSignup">Sign up</button>
+      </div>
+      <div>
+        <form id="signin" action="index.php" method="POST">
+          <ul style="margin-top: -30px">
+            <li class="signinItem">
+              <input type="text" name="inEmailUser" placeholder="Email/User" required />
+              <i class="fas fa-envelope iEmail"></i>
+            </li>
+            <li class="signinItem">
+              <input type="password" name="inPassword" placeholder="Password" required />
+              <i class="fas fa-lock iPassword"></i>
+            </li>
+          </ul>
+          <div class="divCheck">
+            <input type="checkbox" />
+            <span>Remember password</span>
+          </div>
+          <button class="btnSignin" name="signin" type="submit" value="logar">Sign in</button>
+          <button class="goBack" id="closePopupButton" formnovalidate>Back</button>
+        </form>
+
+        <form id="signup" action="index.php" method="POST">
+          <ul style="margin-top: -30px">
+            <li class="signupItem">
+              <input type="text" name="user" placeholder="User" required />
+              <i class="fa-solid fa-user"></i>
+            </li>
+            <li class="signupItem">
+              <input type="text" name="email" placeholder="Email" required />
+              <i class="fas fa-envelope iEmail"></i>
+            </li>
+            <li class="signupItem">
+              <input type="password" name="password" placeholder="Password" required />
+              <i class="fas fa-lock iPassword"></i>
+            </li>
+            <li class="signupItem">
+              <input type="password" name="password_2" placeholder="Confirm password" required />
+              <i class="fas fa-lock iPassword2"></i>
+            </li>
+          </ul>
+          <div class="divCheck">
+            <input name="terms" type="checkbox" required />
+            <span>Terms</span>
+          </div>
+          <button class="btnSignup" name="signup" type="submit">Sign up</button>
+          <button class="goBack" id="closePopupButton" formnovalidate>Back</button>
+        </form>
+      </div>
     </div>
-    <div>
-      <form id="signin" action="index.php" method="POST">
-        <ul style="margin-top: -30px">
-          <li class="signinItem">
-            <input type="text" name="inEmailUser" placeholder="Email/User" required />
-            <i class="fas fa-envelope iEmail"></i>
-          </li>
-          <li class="signinItem">
-            <input type="password" name="inPassword" placeholder="Password" required />
-            <i class="fas fa-lock iPassword"></i>
-          </li>
-        </ul>
-        <div class="divCheck">
-          <input type="checkbox" />
-          <span>Remember password</span>
-        </div>
-        <button class="btnSignin" name="signin" type="submit" value="logar">Sign in</button>
-        <button class="goBack" id="closePopupButton" formnovalidate>Back</button>
-      </form>
-
-      <form id="signup" action="index.php" method="POST">
-        <ul style="margin-top: -30px">
-          <li class="signupItem">
-            <input type="text" name="user" placeholder="User" required />
-            <i class="fa-solid fa-user"></i>
-          </li>
-          <li class="signupItem">
-            <input type="text" name="email" placeholder="Email" required />
-            <i class="fas fa-envelope iEmail"></i>
-          </li>
-          <li class="signupItem">
-            <input type="password" name="password" placeholder="Password" required />
-            <i class="fas fa-lock iPassword"></i>
-          </li>
-          <li class="signupItem">
-            <input type="password" name="password_2" placeholder="Confirm password" required />
-            <i class="fas fa-lock iPassword2"></i>
-          </li>
-        </ul>
-        <div class="divCheck">
-          <input name="terms" type="checkbox" required />
-          <span>Terms</span>
-        </div>
-        <button class="btnSignup" name="signup" type="submit">Sign up</button>
-        <button class="goBack" id="closePopupButton" formnovalidate>Back</button>
-      </form>
-
-    </div>
-
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

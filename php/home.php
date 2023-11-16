@@ -34,6 +34,7 @@ if (isset($_POST['logout'])) {
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <title>Home</title>
+  <script src="https://kit.fontawesome.com/0abe9d2537.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -246,24 +247,53 @@ if (isset($_POST['logout'])) {
   </div>
   <!---------------------- JANELAS POP UP CADASTROS ---------------------->
   <div id="cadInvestment">
-    <div id="popupContent">
-      <!-- Conteúdo da janela de pop-up -->
-      <h2>Cadastro</h2>
-      <form>
-        <!-- Seus campos de formulário de cadastro aqui -->
-        <label for="username">Nome de Usuário:</label>
-        <input type="text" id="username" name="username">
-
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password">
-
-        <button type="submit">Cadastrar</button>
+    <div id="cadInvestmentContent">
+      <h2 class="formTitle">Add Investment</h2>
+      <form class="fieldDiv" style="margin-top:25px;">
+        <ul class="fieldList">
+          <li class="signinItem">
+            <i class="fa-solid fa-signature"></i>
+            <input type="text" name="invDescription" placeholder="Description" required />
+          </li>
+          <li class="signinItem">
+            <i class="fa-solid fa-list"></i>
+            <input type="text" name="invTipo" placeholder="Tipo" required />
+          </li>
+          <li class="signinItem">
+            <i class="fa-solid fa-tag"></i>            
+            <input type="text" name="invTag" placeholder="Tag" />
+          </li>
+          <li class="signinItem">
+            <i class="fa-solid fa-arrow-up-9-1"></i>
+            <input name="invQuantity" type="number" id="decimalInput" step="0.01" placeholder="Quantity" />
+          </li>
+          <li class="signinItem">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <input name="invValue" type="number" id="decimalInput" step="0.01" placeholder="Total Value" />
+          </li>
+        </ul>
       </form>
 
-      <!-- Botão para fechar a janela de pop-up -->
-      <button id="closePopupButton">Fechar</button>
+      <div class="btnCtrlCads">
+        <button id="closeCadInvestment" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+        <button class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm </button>
+      </div>
     </div>
   </div>
+  <div id="cadType">
+    <div id="cadTypeContent">
+
+
+    </div>
+  </div>
+  <div id="cadTag">
+    <div id="cadTagContent">
+
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="../js/home.js"></script>
 </body>
 
 </html>

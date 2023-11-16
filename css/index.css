@@ -157,6 +157,18 @@ a {
 /*Fim do Footer*/
 
 /* Janela de Login Register */
+#popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo escuro para destacar a janela de pop-up */
+    justify-content: center;
+    align-items: center;
+}
+
 #popupContainer {    
     display: none;
     position: fixed;
