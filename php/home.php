@@ -1,9 +1,93 @@
 <?php
+//Funções
+function inserirTag($conexao, $descricao, $obs)
+{
+  if (empty($conexao) || $descricao == null) {
+    return false;
+  }
+
+  $SQL = 'INSERT INTO TAG(DESCRICAO, STATUS, OBS) VALUES(?,?,?)';
+  $PARAMETERS = array($descricao, 'Ativo', $obs);
+  $QUERY = sqlsrv_prepare($conexao, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Erro na preparação da INSERÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  }
+
+  $resultado = sqlsrv_execute($QUERY);
+
+  if ($resultado === false) {
+    echo "<script>alert('Erro na execução da INSERÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  }
+
+  sqlsrv_free_stmt($QUERY); // Libera os recursos do statement
+
+  return true;
+}
+
+function inserirTipo($conexao, $descricao, $obs)
+{
+  if (empty($descricao)) {
+    return false;
+  }
+
+  $SQL = 'INSERT INTO TIPO_INVESTIMENTO (DESCRICAO, STATUS, OBS) VALUES(?,?,?)';
+  $PARAMETERS = array($descricao, 'Ativo', $obs);
+  $QUERY = sqlsrv_prepare($conexao, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Erro na preparação da INSERÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  }
+
+  $resultado = sqlsrv_execute($QUERY);
+
+  if ($resultado === false) {
+    echo "<script>alert('Erro na execução da INSERÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  }
+
+  return true;
+}
+
+function inserirInvestimento($conexao, $dados)
+{
+  if (empty($dados) || !is_array($dados)) {
+    return false;
+  }
+
+  $SQL = 'INSERT INTO INVESTIMENTO (ID_USUARIO, ID_TIPO_INVESTIMENTO, ID_TAG, DESCRICAO, QUANTIDADE_TOTAL, VALOR_TOTAL_APORTADO, PRECO_MEDIO, STATUS) VALUES(?,?,?,?,?,?,?,?)';
+  $PARAMETERS = array($dados['id_usuario'], $dados['id_tipo'], $dados['id_tag'], $dados['descricao'], $dados['qnt_total'], $dados['vl_total'], $dados['preco_medio'], $dados['status']);
+  $QUERY = sqlsrv_prepare($conexao, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Erro na preparação da INSERÇÃO de INVESTIMENTO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  }
+
+  $resultado = sqlsrv_execute($QUERY);
+
+  if ($resultado === false) {
+    echo "<script>alert('Erro na execução da INSERÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  }
+
+  return true;
+}
+
+function inserirMovimentacao($conexao, $dados){}
+
+
+
+
+//Códigos da página e gatilhos
 session_start();
 if ((!isset($_SESSION['login']) == true) and (!isset($_SESSION['pass']) == true)) {
   unset($_SESSION['login']);
   unset($_SESSION['pass']);
-  header('Location: login.php');
+  header('Location: index.php');
 } else {
   $logado = $_SESSION['login'];
 }
@@ -13,12 +97,177 @@ if (isset($_POST['logout'])) {
   unset($_SESSION['pass']);
   header('Location: index.php');
 }
-// TO-DO ---------- SELECT PARA PREENCHIMENTO DO GRID PG HOME
-// include_once('connection.php');
 
-// $SQL = 'SELECT INV.* FROM INVESTIMENTO INV WHERE INV.ID_USUARIO = ? AND STATUS="Ativo" ORDER BY INV.VALOR_TOTAL_APORTADO DESC';
-// $PARAMETERS = array($emailOrUser, $emailOrUser, md5($password));
-// $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+if (isset($_POST['confirmInvestment'])) {
+  //Cria as variáveis e atribui a elas os valores informados no form.
+  $invDescription = $_POST['invDescription'];
+  $invTipo = $_POST['invTipo'];
+  $invTag = $_POST['invTag'];
+  $invQuantity = $_POST['invQuantity'];
+  $invValue = $_POST['invValue'];
+
+  $hasType = false;
+  $hasTag = false;
+
+  if ($invQuantity < 0) {
+    $invQuantity = 0;
+  }
+
+  if ($invValue < 0) {
+    $invValue = 0;
+  }
+
+  //Calcula Preco Médio
+  if ($invValue / $invQuantity > 0) {
+    $invPrecoMedio = $invValue / $invQuantity;
+  } else {
+    $invPrecoMedio = 0;
+  }
+
+  //Inclui o arquivo de conexão.
+  include_once('connection.php');
+
+  //Procura o Tipo 
+  $SQL = 'SELECT TIPO.ID, TIPO.DESCRICAO FROM TIPO_INVESTIMENTO TIPO  WHERE TIPO.DESCRICAO = ? and TIPO.STATUS = ?';
+  $PARAMETERS = array($invTipo, 'Ativo');
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Error in executing query for select TIPO_INVESTIMENTO(1).</br>');</script>";
+    die(print_r(sqlsrv_errors(), true));
+  } else {
+    if (sqlsrv_num_rows($QUERY) > 0) {
+      $rowType = sqlsrv_fetch_array($QUERY);
+      $hasType = true;
+    } else {
+      $hasType = false;
+    }
+  }
+
+  //Procura a Tag 
+  $SQL = 'SELECT TAG.ID, TAG.DESCRICAO FROM TAG WHERE TAG.DESCRICAO = ? AND TAG.STATUS = ?';
+  $PARAMETERS = array($invTag, 'Ativo');
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Error in executing query for select TAG(1).</br>');</script>";
+    die(print_r(sqlsrv_errors(), true));
+  } else {
+    if (sqlsrv_num_rows($QUERY) > 0) {
+      $rowTAG = sqlsrv_fetch_array($QUERY);
+      $hasTag = true;
+    } else {
+      $hasTag = false;
+    }
+  }
+
+  //Se necessário faz as inserções e tenta novamente pesquisar
+  if ($hasType == false) {
+    if (!inserirTipo($conn, $invTipo, '')) {
+      echo "<script>alert('Error while inserting Type, function inserirTipo.</br>');</script>";
+    }
+  }
+
+  if ($hasTag == false) {
+    if (!inserirTag($conn, $invTag, '')) {
+      echo "<script>alert('Error while inserting TAG, function inserirTag.</br>');</script>";
+    }
+  }
+
+  //Pesquisa pelo registro de Tipo inserido
+  $SQL = 'SELECT TIPO.ID, TIPO.DESCRICAO FROM TIPO_INVESTIMENTO TIPO  WHERE TIPO.DESCRICAO = ? AND TIPO.STATUS = ?';
+  $PARAMETERS = array($invTipo, 'Ativo');
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Error in executing last resort select in TIPO_INVESTIMENTO.</br>');</script>";
+    die(print_r(sqlsrv_errors(), true));
+  } else {
+    if (sqlsrv_has_rows($QUERY)) {
+      $rowType = sqlsrv_fetch_array($QUERY);
+    }
+  }
+
+  //Pesquisa pelo registro de TAG inserido
+  $SQL = 'SELECT TAG.ID, TAG.DESCRICAO FROM TAG WHERE TAG.DESCRICAO = ? AND TAG.STATUS = ?';
+  $PARAMETERS = array($invTag, 'Ativo');
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Error in executing last resort select in TAG.</br>');</script>";
+    die(print_r(sqlsrv_errors(), true));
+  } else {
+    if (sqlsrv_has_rows($QUERY)) {
+      $rowTAG = sqlsrv_fetch_array($QUERY);
+    }
+  }
+
+  //Pega o id do usuário
+  $SQL = 'SELECT USU.ID, USU.LOGIN FROM USUARIO USU WHERE USU.STATUS=?';
+  $PARAMETERS = array('Ativo');
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    throw new Exception('Error selecting USUARIO: ' . print_r(sqlsrv_errors(), true));
+  }
+
+  if (sqlsrv_has_rows($QUERY)) {
+    $rowUsu = sqlsrv_fetch_array($QUERY);
+  } else {
+    echo "<script>alert('Error in executing select in table USUARIO.</br>');</script>";
+  }
+
+  //Por final faz o cadastro de INVESTIMENTO
+  $dadosInvestimento = array(
+    'id_usuario' => $rowUsu[0],
+    'id_tipo' => $rowType[0],
+    'id_tag' => $rowTAG[0],
+    'descricao' => $invDescription,
+    'qnt_total' => $invQuantity,
+    'vl_total' => $invValue,
+    'preco_medio' => $invPrecoMedio,
+    'status' => 'Ativo',
+  );
+
+  if ($rowTAG !== null && $rowType !== null && $rowUsu !== null) {
+    if (inserirInvestimento($conn, $dadosInvestimento)) {
+      echo "<script>alert('Investment registeres sucessfully.</br>');</script>";
+    } else {
+      echo "<script>alert('Investment could not be registered.</br>');</script>";
+    }
+  } else {
+    echo "Failed to insert record into INVESTMENT table. Do not has all the necessary data.";
+  }
+
+  sqlsrv_free_stmt($QUERY);
+  sqlsrv_close($conn);
+}
+
+if (isset($_POST['confirmTag'])) {
+  //Cria as variáveis e atribui a elas os valores informados no form.
+  $tagDescription = $_POST['tagDescription'];
+  $tagObservation = $_POST['tagObservation'];
+  include_once('connection.php');
+
+  if (inserirTag($conn, $tagDescription, $tagObservation)) {
+    echo "<script>alert('Tag Record inserted sucessfully!');</script>";
+  } else {
+    echo "<script>alert('Error in insertion of TAG record!');</script>";
+  }
+}
+
+if (isset($_POST['confirmType'])) {
+  //Cria as variáveis e atribui a elas os valores informados no form.
+  $typeDescription = $_POST['typeDescription'];
+  $typeObservation = $_POST['typeObs'];
+  include_once('connection.php');
+
+  if (inserirTipo($conn, $typeDescription, $typeObservation)) {
+    echo "<script>alert('Type Record inserted sucessfully!');</script>";
+  } else {
+    echo "<script>alert('Error in insertion of Type record!');</script>";
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +303,7 @@ if (isset($_POST['logout'])) {
       </div>
       <form id='sidebar' action='home.php' method='POST'>
         <div class="sidebar">
-          <a href="#">
+          <a href="../php/home.php">
             <span class="material-symbols-outlined">home</span>
             <h3>Dashboard</h3>
           </a>
@@ -236,11 +485,11 @@ if (isset($_POST['logout'])) {
       <button class="AddButtons" id="openCadInvestment">
         <h2 class="AddText">Add Investments</h2>
       </button>
-      <button class="AddButtons">
-        <h2 class="AddText" id="openCadType">Add Type</h2>
+      <button class="AddButtons" id="openCadType">
+        <h2 class="AddText">Add Type</h2>
       </button>
-      <button class="AddButtons">
-        <h2 class="AddText" id="openCadTag">Add Tag</h2>
+      <button class="AddButtons" id="openCadTag">
+        <h2 class="AddText">Add Tag</h2>
       </button>
     </div>
     <!---------------------- END OF RECENT UPDATES ---------------------->
@@ -249,47 +498,102 @@ if (isset($_POST['logout'])) {
   <div id="cadInvestment">
     <div id="cadInvestmentContent">
       <h2 class="formTitle">Add Investment</h2>
-      <form class="fieldDiv" style="margin-top:25px;">
+      <form id="investmentForm" class="fieldDiv" style="margin-top:25px;" action="home.php" method="POST">
         <ul class="fieldList">
           <li class="signinItem">
-            <i class="fa-solid fa-signature"></i>
-            <input type="text" name="invDescription" placeholder="Description" required />
+            <div class="inputWithIcon">
+              <input type="text" name="invDescription" placeholder="Description" required="">
+              <i class="fas fa-signature" aria-hidden="true"></i>
+            </div>
           </li>
           <li class="signinItem">
-            <i class="fa-solid fa-list"></i>
-            <input type="text" name="invTipo" placeholder="Tipo" required />
+            <div class="inputWithIcon">
+              <i class="fa-solid fa-list"></i>
+              <input type="text" name="invTipo" placeholder="Tipo" required />
+            </div>
           </li>
           <li class="signinItem">
-            <i class="fa-solid fa-tag"></i>            
-            <input type="text" name="invTag" placeholder="Tag" />
+            <div class="inputWithIcon">
+              <i class="fa-solid fa-tag"></i>
+              <input type="text" name="invTag" placeholder="Tag" required />
+            </div>
           </li>
           <li class="signinItem">
-            <i class="fa-solid fa-arrow-up-9-1"></i>
-            <input name="invQuantity" type="number" id="decimalInput" step="0.01" placeholder="Quantity" />
+            <div class="inputWithIcon">
+              <i class="fa-solid fa-arrow-up-9-1"></i>
+              <input name="invQuantity" type="number" id="decimalInput" step="0.01" placeholder="Quantity" required />
+            </div>
           </li>
           <li class="signinItem">
-            <i class="fa-solid fa-dollar-sign"></i>
-            <input name="invValue" type="number" id="decimalInput" step="0.01" placeholder="Total Value" />
+            <div class="inputWithIcon">
+              <i class="fa-solid fa-dollar-sign"></i>
+              <input name="invValue" type="number" id="decimalInput" step="0.01" placeholder="Total Value" required />
+            </div>
           </li>
         </ul>
+        <div class="btnCtrlCads">
+          <button id="closeCadInvestment" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="confirmInvestment" name="confirmInvestment" class="btnConfirm"><i
+              class="fa-solid fa-check"></i>Confirm </button>
+        </div>
       </form>
-
-      <div class="btnCtrlCads">
-        <button id="closeCadInvestment" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
-        <button class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm </button>
-      </div>
     </div>
   </div>
+  <!-------------------------------------------->
   <div id="cadType">
     <div id="cadTypeContent">
-
-
+      <h2 class="formTitle">Add Type</h2>
+      <form id="typeForm" class="fieldDiv" style="margin-top:25px;" action="home.php" method="POST">
+        <ul class="fieldList">
+          <li class="signinItem">
+            <div class="inputWithIcon">
+              <input type="text" name="typeDescription" placeholder="Description" required="">
+              <i class="fas fa-signature" aria-hidden="true"></i>
+            </div>
+          </li>
+          <li class="signinItem">
+            <div class="inputWithIcon">
+              <input type="text" name="typeObs" placeholder="Obs">
+              <i class="fas fa-signature" aria-hidden="true"></i>
+            </div>
+          </li>
+        </ul>
+        <div class="btnCtrlCads">
+          <button id="closeCadType" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="confirmType" name="confirmType" class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm
+          </button>
+        </div>
+      </form>
     </div>
   </div>
+  </div>
+  <!-------------------------------------------->
   <div id="cadTag">
     <div id="cadTagContent">
-
+      <h2 class="formTitle">Add TAG</h2>
+      <form id="typeForm" class="fieldDiv" style="margin-top:25px;" action="home.php" method="POST">
+        <ul class="fieldList">
+          <li class="signinItem">
+            <div class="inputWithIcon">
+              <input type="text" name="tagDescription" placeholder="Description" required="">
+              <i class="fas fa-signature" aria-hidden="true"></i>
+            </div>
+          </li>
+          <li class="signinItem">
+            <div class="inputWithIcon">
+              <input type="text" name="tagObservation" placeholder="Obs">
+              <i class="fas fa-signature" aria-hidden="true"></i>
+            </div>
+          </li>
+        </ul>
+        <div class="btnCtrlCads">
+          <button id="closeCadTag" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="confirmTag" name="confirmTag" class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

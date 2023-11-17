@@ -78,9 +78,8 @@ aside .sidebar .btnLeftSide span{
 }
 
 aside .sidebar .btnLeftSide:last-child{
-    position: absolute;
-    bottom: 7.5rem;
-    width: 85%;
+    position: fixed;
+    bottom: 15%;    
 }
 
 aside .sidebar .btnLeftSide:active{
@@ -242,7 +241,7 @@ aside .sidebar{
     background: white;
     display: flex;
     flex-direction: column;
-    height: 86vh;
+    height: 100%;
     position: relative;
     top:3rem
 }
@@ -448,13 +447,6 @@ main table tbody tr:last-child td{
     border: none;
 }
 
-.fieldDiv {
-    position: absolute;
-    margin-top: 80px;
-    transition: .5s;
-    width: 100%;
-    height: 100%;
-}
 
 main .investments a{
     text-align: center;
@@ -528,65 +520,9 @@ main .frame{
 .AddText{
     color: white;
 }
-
-.btnCtrlCads{
-    
-    
-    
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-}
-
-.formTitle{
-    margin-top: 5px;
-    color: var(--color-dark);
-}
-
-.btnConfirm{
-    padding: 12px;
-    cursor: pointer;
-    color: white;
-    background: var(--color-sucess);
-    border-radius: 10px;
-    font-size: 14px;
-    border: 2px solid var(--color-info-light);
-    font-weight: bold;
-}
-
-input[type="text"], input[type="number"] {
-    background: var(--color-info-light);
-    margin-bottom: 10px;
-    border: none;    
-    border-radius: 60px;
-    padding: 8px 0  8px 35px;
-    outline: none;
-    width: 88%;
-    box-shadow: 0 2rem 3rem rgba(132, 139, 200, 0.18);
-}
-
-.btnConfirm:hover{
-    background: #2de3a7;
-}
-
-.btnCancel{
-    padding: 12px;
-    cursor: pointer;
-    color: white;
-    background: var(--color-danger);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    border: 2px solid var(--color-info-light);
-}
-
-.btnCancel:hover{
-    background: #e95e69;
-}
-
 /* ============= JANELAS POP-UP ============= */  
-#cadInvestment {
+#cadInvestment, #cadTag, #cadType
+{
     display: none;
     position: fixed;
     top: 0;
@@ -598,92 +534,156 @@ input[type="text"], input[type="number"] {
     align-items: center;
 }
 
-#cadInvestmentContent {
+#cadInvestmentContent{
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 0px;
+    padding: 20px;
     width: 350px;
-    height: 350px;
-    background: linear-gradient(to bottom, #babebe, rgb(70, 90, 151));    
-    border-radius: 10px;    
-    box-shadow: 0 0 20px 0 darkgrey;  
+    height: 430px;
+    background: #fff;
+    border: 3px solid #7380ec;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 darkgrey;
     box-sizing: border-box;
-    z-index: 1000; /* Garante que a janela de pop-up esteja acima do conteúdo principal */
+    z-index: 1000;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    overflow: hidden;        
+    overflow: hidden;
     margin: 0;
+    max-height: 80vh; 
 }
 
-#cadType {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fundo escuro para destacar a janela de pop-up */
-    justify-content: center;
-    align-items: center;
-}
-
-#cadTypeContent {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 6px;
-    width: 350px;
-    height: 450px;
-    background: linear-gradient(to bottom, #babebe, rgb(70, 90, 151));    
-    border-radius: 10px;    
-    box-shadow: 0 0 20px 0 darkgrey;  
+input {
+    width: calc(100% - 22px);
+    padding: 10px;
     box-sizing: border-box;
-    z-index: 1000; /* Garante que a janela de pop-up esteja acima do conteúdo principal */
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;        
-    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background-color: #f9f9f9;
 }
 
-#cadTag {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fundo escuro para destacar a janela de pop-up */
-    justify-content: center;
-    align-items: center;
+input.observation{
+    height: 40px;
 }
 
-#cadTagContent {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 6px;
-    width: 350px;
-    height: 450px;
-    background: linear-gradient(to bottom, #babebe, rgb(70, 90, 151));    
-    border-radius: 10px;    
-    box-shadow: 0 0 20px 0 darkgrey;  
-    box-sizing: border-box;
-    z-index: 1000; /* Garante que a janela de pop-up esteja acima do conteúdo principal */
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;        
-    margin: 0;
+
+  
+#decimalInput {
+    width: calc(100% - 22px);
 }
 
-li i{
+.inputWithIcon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Garante que a lateral direita esteja alinhada */
+}
+
+.inputWithIcon input {
+    flex: 1; /* Ocupa todo o espaço disponível */
+    padding-left: 30px; /* Adiciona espaço para o ícone */
+}
+
+.inputWithIcon i {
     position: absolute;
-    left: 33px;
-    margin-top: 9px;
-    
+    left: 5px;
+    color: #666;
+}
+
+.fieldDiv {
+    margin-top: 25px;
+}
+
+.fieldList {
+    list-style: none;
+    padding: 0;
+}
+
+.signinItem {
+    margin-bottom: 20px;
+}
+
+.signinItem i {
+    margin-right: 10px;
+    color: #666;
+}
+  
+
+.btnCtrlCads {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end; /* Alinha os botões no canto direito */
+}
+
+.btnCancel,
+.btnConfirm {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.btnCancel {
+  background-color: #e74c3c;
+}
+
+.btnConfirm {
+  background-color: #2ecc71;
+  margin-left: 10px; /* Adiciona um espaço entre os botões */
+}
+
+.btnConfirm i,
+.btnCancel i {
+  margin-right: 5px; /* Adiciona um espaço entre o ícone e o texto */
+}
+
+#cadTypeContent{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 350px;
+    height: 260px;
+    background: #fff;
+    border: 3px solid #7380ec;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 darkgrey;
+    box-sizing: border-box;
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    margin: 0;
+    max-height: 80vh;
+}
+
+#cadTagContent{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 350px;
+    height: 260px;
+    background: #fff;
+    border: 3px solid #7380ec;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 darkgrey;
+    box-sizing: border-box;
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    margin: 0;
+    max-height: 80vh;
 }
 

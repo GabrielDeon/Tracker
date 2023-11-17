@@ -49,9 +49,10 @@ if (isset($_POST['signin'])) {
     }
 
     /* Retrieve and display the results of the query. */
-    if (sqlsrv_has_rows($QUERY) == true) {
+    if (sqlsrv_has_rows($QUERY) == true) {      
       $_SESSION['login'] = $emailOrUser;
       $_SESSION['pass'] = $password;
+
 
       header('Location: home.php');
     } else {
@@ -169,7 +170,6 @@ if (isset($_POST['signin'])) {
           <button class="btnSignin" name="signin" type="submit" value="logar">Sign in</button>
           <button class="goBack" id="closePopupButton" formnovalidate>Back</button>
         </form>
-
         <form id="signup" action="index.php" method="POST">
           <ul style="margin-top: -30px">
             <li class="signupItem">
@@ -199,10 +199,8 @@ if (isset($_POST['signin'])) {
       </div>
     </div>
   </div>
-
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="../js/index.js"></script>
-
 </body>
 
 </html>
