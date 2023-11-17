@@ -10,10 +10,18 @@ $(document).ready(function () {
         $("#cadTag").fadeIn();
     });
 
+    $("#openCadMov").click(function () {
+        $("#cadMov").fadeIn();
+    });
+
+    $("#openDel").click(function () {
+        $("#cadDel").fadeIn();
+    });
+
     //FECHAMENTO DE CADASTROS   
     $(document).keydown(function (e) {
         if (e.keyCode === 27) { // Código da tecla "ESC"
-            $("#cadInvestment, #cadType, #cadTag").fadeOut();
+            $("#cadInvestment, #cadType, #cadTag, #cadMov").fadeOut();
         }
     });    
 
@@ -26,20 +34,12 @@ $(document).ready(function () {
     $("#closeCadTag").click(function () {
         $("#cadTag").fadeOut();
     });
+    $("#closeCadMov").click(function () {
+        $("#cadMov").fadeOut();
+    });     
 
-    // Fechar a janela de pop-up ao clicar fora dela (no fundo escuro)
-    $(document).mouseup(function (e) {
-        var cadInvestment = $("#cadInvestment");
-        if (!cadInvestment.is(e.target) && cadInvestment.has(e.target).length === 0) {
-            cadInvestment.fadeOut();
-        }
-        var cadType = $("#cadType");
-        if (!cadType.is(e.target) && cadType.has(e.target).length === 0) {
-            cadType.fadeOut();
-        }
-        var cadTag = $("#cadTag");
-        if (!cadTag.is(e.target) && cadTag.has(e.target).length === 0) {
-            cadTag.fadeOut();
-        }
+    $("#closeCadDel").click(function () {
+        $("#cadDel").fadeIn();
     });
+    
 });

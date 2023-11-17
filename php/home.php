@@ -132,11 +132,6 @@ $SQL = 'SELECT INV.ID, INV.DESCRICAO, INV.QUANTIDADE_TOTAL, INV.VALOR_TOTAL_APOR
 $PARAMETERS = array($_SESSION['id_user'], 'Ativo');
 $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
 
-
-
-
-
-
 if (isset($_POST['confirmInvestment'])) {
   //Cria as variáveis e atribui a elas os valores informados no form.
   $invDescription = $_POST['invDescription'];
@@ -318,6 +313,88 @@ if (isset($_POST['confirmType'])) {
     echo "<script>alert('Error in insertion of Type record!');</script>";
   }
 }
+
+if (isset($_POST['confirmMov'])) {
+  //Cria as variáveis e atribui a elas os valores informados no form.
+  $movIdInvs = $_POST['movID'];
+  $movQnt = $_POST['movQuantity'];
+  $movValue = $_POST['movValue'];
+  $movDate = $_POST['movDate'];
+
+  include_once('connection.php');
+
+  //Calcula Preco Médio
+  if ($movQnt !== 0) {
+    $movPrecoMedio = $movValue / $movQnt;
+  }
+
+  $dadosMov = array(
+    'id_investimento' => $movIdInvs,
+    'valor' => $movValue,
+    'data' => $movDate,
+    'qnt_total' => $movQnt,
+    'preco_medio' => $movPrecoMedio,
+    'obs' => '',
+    'status' => 'Ativo',
+  );
+
+  $SQL = 'SELECT INV.QUANTIDADE_TOTAL, INV.VALOR_TOTAL_APORTADO, INV.PRECO_MEDIO FROM INVESTIMENTO INV WHERE INV.ID=? AND STATUS = ?';
+  $PARAMETERS = array($dadosMov['id_investimento'], 'Ativo');
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Error in executing last resort select in TAG.</br>');</script>";
+    die(print_r(sqlsrv_errors(), true));
+  } else {
+    if (sqlsrv_has_rows($QUERY)) {
+      $InvMovData = sqlsrv_fetch_array($QUERY);
+    }
+  }
+
+  $finalValor = $InvMovData['VALOR_TOTAL_APORTADO'] + $dadosMov['valor'];
+  $finalQnt = $InvMovData['QUANTIDADE_TOTAL'] + $dadosMov['qnt_total'];
+
+  if ($finalQnt !== 0) {
+    $finalPM = $finalValor / $finalQnt;
+  } else {
+    $finalPM = 0;
+  }
+
+  $SQL = 'UPDATE INVESTIMENTO SET QUANTIDADE_TOTAL =?, VALOR_TOTAL_APORTADO=?, PRECO_MEDIO=? WHERE ID=?';
+  $PARAMETERS = array($finalQnt, $finalValor, $finalPM, $dadosMov['id_investimento']);
+  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Error in UPDATE int table INVESTIMENTO.</br>');</script>";
+  }
+
+  header('Location: home.php');
+}
+
+if (isset($_POST['confirmDel'])) {
+  //Cria as variáveis e atribui a elas os valores informados no form.
+  $DELIdInvs = $_POST['delID'];
+
+  include_once('connection.php');
+
+  $SQL = 'DELETE FROM INVESTIMENTO WHERE ID=?';
+  $PARAMETERS = array($DELIdInvs);
+  $QUERY = sqlsrv_prepare($conn, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Erro na preparação da UPDATE INVESTIMENTO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+  }
+
+  $resultado = sqlsrv_execute($QUERY);
+
+  if ($resultado === false) {
+    echo "<script>alert('Erro na execução do UPTADE EM INVESTIMENTO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+  }
+
+  sqlsrv_free_stmt($QUERY);
+
+  header('Location: home.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -439,7 +516,7 @@ if (isset($_POST['confirmType'])) {
         <!---------------------- END OF INSIGHTS ---------------------->
         <div class="investments">
           <h2>Investments</h2>
-          <table class="table">
+          <table class="table" id="investmentsTable">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -454,16 +531,23 @@ if (isset($_POST['confirmType'])) {
               <?php
               while ($rowInvestments = sqlsrv_fetch_array($QUERY, SQLSRV_FETCH_ASSOC)) {
                 echo "<tr>";
-                echo "<td>" . $rowInvestments['ID'] . "</td>";
+                echo "<td class='id-column'>" . $rowInvestments['ID'] . "</td>";
                 echo "<td>" . $rowInvestments['DESCRICAO'] . "</td>";
                 echo "<td>" . $rowInvestments['QUANTIDADE_TOTAL'] . "</td>";
                 echo "<td>" . $rowInvestments['VALOR_TOTAL_APORTADO'] . "</td>";
                 echo "<td>" . $rowInvestments['PRECO_MEDIO'] . "</td>";
+                echo "<td>
+                        <a class='btn btn-primary' href='#' id='openCadMov'>
+                          <i class='fa-solid fa-arrow-right-arrow-left'></i>
+                        </a>
+                        <a class='btn btn-primary' href='#' id='openDel'>
+                          <i class='fa-solid fa-trash-can'></i>
+                        </a>
+                      </td>";
                 // Adicione mais colunas conforme necessário
                 echo "</tr>";
               }
               ?>
-
             </tbody>
           </table>
           <a href="#">Show All</a>
@@ -540,7 +624,7 @@ if (isset($_POST['confirmType'])) {
           <li class="signinItem">
             <div class="inputWithIcon">
               <i class="fa-solid fa-list"></i>
-              <input type="text" name="invTipo" placeholder="Tipo" required />
+              <input type="text" name="invTipo" placeholder="Type" required />
             </div>
           </li>
           <li class="signinItem">
@@ -563,7 +647,8 @@ if (isset($_POST['confirmType'])) {
           </li>
         </ul>
         <div class="btnCtrlCads">
-          <button id="closeCadInvestment" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="closeCadInvestment" class="btnCancel" formnovalidate><i
+              class="fa-solid fa-xmark"></i>Cancel</button>
           <button id="confirmInvestment" name="confirmInvestment" class="btnConfirm"><i
               class="fa-solid fa-check"></i>Confirm </button>
         </div>
@@ -590,13 +675,12 @@ if (isset($_POST['confirmType'])) {
           </li>
         </ul>
         <div class="btnCtrlCads">
-          <button id="closeCadType" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="closeCadType" class="btnCancel" formnovalidate><i class="fa-solid fa-xmark"></i>Cancel</button>
           <button id="confirmType" name="confirmType" class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm
           </button>
         </div>
       </form>
     </div>
-  </div>
   </div>
   <!-------------------------------------------->
   <div id="cadTag">
@@ -618,13 +702,73 @@ if (isset($_POST['confirmType'])) {
           </li>
         </ul>
         <div class="btnCtrlCads">
-          <button id="closeCadTag" class="btnCancel"><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="closeCadTag" class="btnCancel" formnovalidate><i class="fa-solid fa-xmark"></i>Cancel</button>
           <button id="confirmTag" name="confirmTag" class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm
           </button>
         </div>
       </form>
     </div>
   </div>
+  <!-------------------------------------------->
+  <div id="cadMov">
+    <div id="cadMovContent">
+      <h2 class="formTitle">Transactions</h2>
+      <form id="typeForm" class="fieldDiv" style="margin-top:25px;" action="home.php" method="POST">
+        <li class="signinItem">
+          <div class="inputWithIcon">
+            <i class="fa-solid fa-id-card-clip"></i>
+            <input name="movID" type="number" id="decimalInput" placeholder="Investment ID" required />
+          </div>
+        </li>
+
+        <li class="signinItem">
+          <div class="inputWithIcon">
+            <i class="fa-solid fa-arrow-up-9-1"></i>
+            <input name="movQuantity" type="number" id="decimalInput" step="0.01" placeholder="Quantity" required />
+          </div>
+        </li>
+        <li class="signinItem">
+          <div class="inputWithIcon">
+            <i class="fa-solid fa-dollar-sign"></i>
+            <input name="movValue" type="number" id="decimalInput" step="0.01" placeholder="Total Value" required />
+          </div>
+        </li>
+        <li class="signinItem">
+          <div class="inputWithIcon">
+            <i class="fa-regular fa-calendar-days"></i>
+            <input name="movDate" type="date" id="decimalInput" placeholder="Date" required />
+          </div>
+        </li>
+
+        <div class="btnCtrlCads">
+          <button id="closeCadMov" class="btnCancel" formnovalidate><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="confirmMov" name="confirmMov" class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <!-------------------------------------------->
+  <div id="cadDel">
+    <div id="cadDelContent">
+      <h2 class="formTitle">Delete Investment</h2>
+      <form id="typeForm" class="fieldDiv" style="margin-top:25px;" action="home.php" method="POST">
+        <li class="signinItem">
+          <div class="inputWithIcon">
+            <i class="fa-solid fa-id-card-clip"></i>
+            <input name="delID" type="number" id="decimalInput" placeholder="Investment ID" required />
+          </div>
+        </li>
+
+        <div class="btnCtrlCads">
+          <button id="closeCadDel" class="btnCancel" formnovalidate><i class="fa-solid fa-xmark"></i>Cancel</button>
+          <button id="confirmDel" name="confirmDel" class="btnConfirm"><i class="fa-solid fa-check"></i>Confirm
+          </button>
+        </div>
+
+      </form>
+    </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

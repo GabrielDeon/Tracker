@@ -521,7 +521,7 @@ main .frame{
     color: white;
 }
 /* ============= JANELAS POP-UP ============= */  
-#cadInvestment, #cadTag, #cadType
+#cadInvestment, #cadTag, #cadType, #cadMov, #cadDel
 {
     display: none;
     position: fixed;
@@ -686,4 +686,69 @@ input.observation{
     margin: 0;
     max-height: 80vh;
 }
+
+#cadMovContent{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 350px;
+    height: 365px;
+    background: #fff;
+    border: 3px solid #7380ec;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 darkgrey;
+    box-sizing: border-box;
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    margin: 0;
+    max-height: 80vh;
+}
+
+#cadDelContent{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 350px;
+    height: 215px;
+    background: #fff;
+    border: 3px solid #7380ec;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 darkgrey;
+    box-sizing: border-box;
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    margin: 0;
+    max-height: 80vh;
+}
+
+button.inNOut{
+    background: #2ecc71;
+}
+
+.btn-primary {    
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #0d6efd;
+    --bs-btn-border-color: #0d6efd;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #0b5ed7;
+    --bs-btn-hover-border-color: #0a58ca;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0a58ca;
+    --bs-btn-active-border-color: #0a53be;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #0d6efd;
+    --bs-btn-disabled-border-color: #0d6efd;
+  }
 
