@@ -6,6 +6,14 @@ $(document).ready(function () {
     });
 
     // Fechar a janela de pop-up ao clicar no botão de fechar
+    $(document).keydown(function (e) {
+        if (e.keyCode === 27) { // Código da tecla "ESC"
+            $("#popup").fadeOut();
+            $("#popupContainer").removeClass("visible");
+        }
+    });  
+
+
     $("#closePopupButton").click(function () {
         $("#popup").fadeOut();
         $("#popupContainer").removeClass("visible");

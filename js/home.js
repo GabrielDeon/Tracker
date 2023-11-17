@@ -10,7 +10,13 @@ $(document).ready(function () {
         $("#cadTag").fadeIn();
     });
 
-    //FECHAMENTO DE CADASTROS    
+    //FECHAMENTO DE CADASTROS   
+    $(document).keydown(function (e) {
+        if (e.keyCode === 27) { // Código da tecla "ESC"
+            $("#cadInvestment, #cadType, #cadTag").fadeOut();
+        }
+    });    
+
     $("#closeCadInvestment").click(function () {
         $("#cadInvestment").fadeOut();
     });

@@ -49,10 +49,12 @@ if (isset($_POST['signin'])) {
     }
 
     /* Retrieve and display the results of the query. */
-    if (sqlsrv_has_rows($QUERY) == true) {      
+    if (sqlsrv_has_rows($QUERY) == true) {
+      $rowUSer = sqlsrv_fetch_array($QUERY);
+      
+      $_SESSION['id_user'] = $rowUSer[0];
       $_SESSION['login'] = $emailOrUser;
       $_SESSION['pass'] = $password;
-
 
       header('Location: home.php');
     } else {

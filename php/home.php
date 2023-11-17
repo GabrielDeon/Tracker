@@ -1,4 +1,7 @@
 <?php
+//Variáveis globais
+$idLigacao = 0;
+
 //Funções
 function inserirTag($conexao, $descricao, $obs)
 {
@@ -58,32 +61,59 @@ function inserirInvestimento($conexao, $dados)
     return false;
   }
 
-  $SQL = 'INSERT INTO INVESTIMENTO (ID_USUARIO, ID_TIPO_INVESTIMENTO, ID_TAG, DESCRICAO, QUANTIDADE_TOTAL, VALOR_TOTAL_APORTADO, PRECO_MEDIO, STATUS) VALUES(?,?,?,?,?,?,?,?)';
+  $SQL = 'INSERT INTO INVESTIMENTO (ID_USUARIO, ID_TIPO_INVESTIMENTO, ID_TAG, DESCRICAO, QUANTIDADE_TOTAL, VALOR_TOTAL_APORTADO, PRECO_MEDIO, STATUS) VALUES(?,?,?,?,?,?,?,?); SELECT SCOPE_IDENTITY() AS novo_id;';
   $PARAMETERS = array($dados['id_usuario'], $dados['id_tipo'], $dados['id_tag'], $dados['descricao'], $dados['qnt_total'], $dados['vl_total'], $dados['preco_medio'], $dados['status']);
-  $QUERY = sqlsrv_prepare($conexao, $SQL, $PARAMETERS);
+  $QUERY = sqlsrv_query($conexao, $SQL, $PARAMETERS);
 
   if ($QUERY === false) {
     echo "<script>alert('Erro na preparação da INSERÇÃO de INVESTIMENTO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    return false;
+  } else {
+    sqlsrv_next_result($QUERY);
+
+    $row = sqlsrv_fetch_array($QUERY, SQLSRV_FETCH_ASSOC);
+    global $idLigacao;
+    $idLigacao = $row['novo_id'];
+
+    if ($idLigacao == 0) {
+      echo "<script>alert('Erro na preparação da pegar o ID de ligação.');</script>";
+    }
+
+  }
+
+  return true;
+}
+
+function inserirMovimentacao($conexao, $dados)
+{
+  if (empty($dados) || !is_array($dados)) {
+    return false;
+  }
+
+  $SQL = 'INSERT INTO INVESTIMENTO_MOV (ID_INVESTIMENTO, VALOR, DATA, QUANTIDADE_TOTAL, PRECO_MEDIO, OBS, STATUS) VALUES(?,?,?,?,?,?,?)';
+  $PARAMETERS = array($dados['id_investimento'], $dados['valor'], $dados['data'], $dados['qnt_total'], $dados['preco_medio'], $dados['obs'], $dados['status']);
+  $QUERY = sqlsrv_prepare($conexao, $SQL, $PARAMETERS);
+
+  if ($QUERY === false) {
+    echo "<script>alert('Erro na preparação da INSERÇÃO de MOVIMENTAÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
     return false;
   }
 
   $resultado = sqlsrv_execute($QUERY);
 
   if ($resultado === false) {
-    echo "<script>alert('Erro na execução da INSERÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
+    echo "<script>alert('Erro na execução da INSERÇÃO DE MOVIMENTAÇÃO: " . print_r(sqlsrv_errors(), true) . "');</script>";
     return false;
   }
 
   return true;
 }
 
-function inserirMovimentacao($conexao, $dados){}
-
-
-
-
 //Códigos da página e gatilhos
 session_start();
+//Inclui o arquivo de conexão.
+include_once('connection.php');
+
 if ((!isset($_SESSION['login']) == true) and (!isset($_SESSION['pass']) == true)) {
   unset($_SESSION['login']);
   unset($_SESSION['pass']);
@@ -97,6 +127,15 @@ if (isset($_POST['logout'])) {
   unset($_SESSION['pass']);
   header('Location: index.php');
 }
+
+$SQL = 'SELECT INV.ID, INV.DESCRICAO, INV.QUANTIDADE_TOTAL, INV.VALOR_TOTAL_APORTADO, INV.PRECO_MEDIO FROM INVESTIMENTO INV WHERE INV.ID_USUARIO = ? AND STATUS = ? ORDER BY INV.VALOR_TOTAL_APORTADO DESC';
+$PARAMETERS = array($_SESSION['id_user'], 'Ativo');
+$QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
+
+
+
+
+
 
 if (isset($_POST['confirmInvestment'])) {
   //Cria as variáveis e atribui a elas os valores informados no form.
@@ -123,9 +162,6 @@ if (isset($_POST['confirmInvestment'])) {
   } else {
     $invPrecoMedio = 0;
   }
-
-  //Inclui o arquivo de conexão.
-  include_once('connection.php');
 
   //Procura o Tipo 
   $SQL = 'SELECT TIPO.ID, TIPO.DESCRICAO FROM TIPO_INVESTIMENTO TIPO  WHERE TIPO.DESCRICAO = ? and TIPO.STATUS = ?';
@@ -202,36 +238,50 @@ if (isset($_POST['confirmInvestment'])) {
     }
   }
 
-  //Pega o id do usuário
-  $SQL = 'SELECT USU.ID, USU.LOGIN FROM USUARIO USU WHERE USU.STATUS=?';
-  $PARAMETERS = array('Ativo');
-  $QUERY = sqlsrv_query($conn, $SQL, $PARAMETERS);
-
-  if ($QUERY === false) {
-    throw new Exception('Error selecting USUARIO: ' . print_r(sqlsrv_errors(), true));
-  }
-
-  if (sqlsrv_has_rows($QUERY)) {
-    $rowUsu = sqlsrv_fetch_array($QUERY);
-  } else {
-    echo "<script>alert('Error in executing select in table USUARIO.</br>');</script>";
-  }
-
   //Por final faz o cadastro de INVESTIMENTO
-  $dadosInvestimento = array(
-    'id_usuario' => $rowUsu[0],
-    'id_tipo' => $rowType[0],
-    'id_tag' => $rowTAG[0],
-    'descricao' => $invDescription,
-    'qnt_total' => $invQuantity,
-    'vl_total' => $invValue,
-    'preco_medio' => $invPrecoMedio,
-    'status' => 'Ativo',
-  );
+  if ($rowTAG !== null && $rowType !== null) {
+    $dadosInvestimento = array(
+      'id_usuario' => $_SESSION['id_user'],
+      'id_tipo' => $rowType[0],
+      'id_tag' => $rowTAG[0],
+      'descricao' => $invDescription,
+      'qnt_total' => $invQuantity,
+      'vl_total' => $invValue,
+      'preco_medio' => $invPrecoMedio,
+      'status' => 'Ativo',
+    );
 
-  if ($rowTAG !== null && $rowType !== null && $rowUsu !== null) {
     if (inserirInvestimento($conn, $dadosInvestimento)) {
+      //Seleciona o último ID gerado.
+      $sql = "SELECT SCOPE_IDENTITY() AS id";
+      $stmt = sqlsrv_query($conn, $sql);
+
+      if ($stmt !== false) {
+        $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
+        $idMestre = $row['id'];
+      } else {
+        // Trate o erro ao obter o último ID
+        echo "ID Master selection failed: " . print_r(sqlsrv_errors(), true);
+      }
+
+      $dadosMovimentacao = array(
+        'id_investimento' => $idLigacao,
+        'valor' => $invValue,
+        'data' => date("Y/m/d"),
+        'qnt_total' => $invQuantity,
+        'preco_medio' => $invPrecoMedio,
+        'obs' => 'Primeira movimentação - Referente a criação do Investimento.',
+        'status' => 'Ativo',
+      );
+
+      if (!inserirMovimentacao($conn, $dadosMovimentacao)) {
+        echo "<script>alert('Error! Insertion at INVESTIMENTO_MOV failed.</br>');</script>";
+      }
+
+      $idLigacao = 0;
+
       echo "<script>alert('Investment registeres sucessfully.</br>');</script>";
+      header('Location: home.php');
     } else {
       echo "<script>alert('Investment could not be registered.</br>');</script>";
     }
@@ -284,6 +334,7 @@ if (isset($_POST['confirmType'])) {
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <title>Home</title>
   <script src="https://kit.fontawesome.com/0abe9d2537.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -388,51 +439,31 @@ if (isset($_POST['confirmType'])) {
         <!---------------------- END OF INSIGHTS ---------------------->
         <div class="investments">
           <h2>Investments</h2>
-          <table>
+          <table class="table">
             <thead>
               <tr>
-                <th>Investments</th>
-                <th>Quantity</th>
-                <th>Average Price</th>
-                <th>Total Value</th>
+                <th scope="col">#</th>
+                <th scope="col">Description</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Value</th>
+                <th scope="col">Average Price</th>
+                <th scope="col">...</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Vale</td>
-                <td>42</td>
-                <td>62.77</td>
-                <td class="money">10.000</td>
-                <td class="primary">Details</td>
-              </tr>
-              <tr>
-                <td>Vale</td>
-                <td>42</td>
-                <td>62.77</td>
-                <td class="money">10.000</td>
-                <td class="primary">Details</td>
-              </tr>
-              <tr>
-                <td>Vale</td>
-                <td>42</td>
-                <td>62.77</td>
-                <td class="money">10.000</td>
-                <td class="primary">Details</td>
-              </tr>
-              <tr>
-                <td>Vale</td>
-                <td>42</td>
-                <td>62.77</td>
-                <td class="money">10.000</td>
-                <td class="primary">Details</td>
-              </tr>
-              <tr>
-                <td>Vale</td>
-                <td>42</td>
-                <td>62.77</td>
-                <td class="money">10.000</td>
-                <td class="primary">Details</td>
-              </tr>
+              <?php
+              while ($rowInvestments = sqlsrv_fetch_array($QUERY, SQLSRV_FETCH_ASSOC)) {
+                echo "<tr>";
+                echo "<td>" . $rowInvestments['ID'] . "</td>";
+                echo "<td>" . $rowInvestments['DESCRICAO'] . "</td>";
+                echo "<td>" . $rowInvestments['QUANTIDADE_TOTAL'] . "</td>";
+                echo "<td>" . $rowInvestments['VALOR_TOTAL_APORTADO'] . "</td>";
+                echo "<td>" . $rowInvestments['PRECO_MEDIO'] . "</td>";
+                // Adicione mais colunas conforme necessário
+                echo "</tr>";
+              }
+              ?>
+
             </tbody>
           </table>
           <a href="#">Show All</a>
